@@ -12,5 +12,5 @@ interface RepositoryDokter {
     fun getDokterById(Id: String): Flow<Dokter?>
 
     //Method ini memanfaatkan fungsi insertMahasiswa dari MahasiswaDao
-    suspend fun insertDokter(dokter: Dokter)
+    suspend fun InsertDokter(dokter: Dokter)
 }

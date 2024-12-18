@@ -20,7 +20,7 @@ interface JadwalDao {
     fun getJadwalByid(id: String): Flow<Jadwal?>
 
     @Insert
-    suspend fun insertJadwal(jadwal: Jadwal)
+    suspend fun InsertJadwal(jadwal: Jadwal)
 
     @Delete
     suspend fun DeleteJadwal(jadwal: Jadwal)
