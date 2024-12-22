@@ -11,8 +11,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.ucp2roomdatabase_0036.ui.view.jadwal.DetailJadwalView
 import com.example.ucp2roomdatabase_0036.ui.view.jadwal.HomeJadwalView
 import com.example.ucp2roomdatabase_0036.ui.view.jadwal.InsertJadwalView
+import com.example.ucp2roomdatabase_0036.ui.view.jadwal.UpdateJadwalView
 
 @Composable
 fun PengelolaHalaman(
@@ -76,6 +78,51 @@ fun PengelolaHalaman(
             route = DestinasiInsertJadwal.route
         ) {
             InsertJadwalView(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onNavigate = {
+                    navController.popBackStack()
+                },
+                modifier = modifier
+            )
+        }
+
+        composable(
+            DestinasiDetailJadwal.routeWithArg,
+            arguments = listOf(
+                navArgument(DestinasiDetailJadwal.idJadwal) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val idJadwal = it.arguments?.getString(DestinasiDetailJadwal.idJadwal)
+            idJadwal?.let { idJadwal ->
+                DetailJadwalView(
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onEditClick = {
+                        navController.navigate("${DestinasiUpdateJadwal.route}/$it")
+                    },
+
+                    onDeleteClick = {
+                        navController.popBackStack()
+                    },
+                    modifier = modifier
+                )
+            }
+        }
+
+        composable(
+            DestinasiUpdateJadwal.routeWithArg,
+            arguments = listOf(
+                navArgument(DestinasiUpdateJadwal.idJadwal){
+                    type = NavType.StringType
+                }
+            )
+        ){
+            UpdateJadwalView(
                 onBack = {
                     navController.popBackStack()
                 },

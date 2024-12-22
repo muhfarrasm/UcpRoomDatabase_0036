@@ -23,11 +23,11 @@ object DestinasiInsertJadwal : AlamatNavigasi {
 }
 object DestinasiDetailJadwal : AlamatNavigasi {
     override val route = "detail"
-    const val id = "idJadwal"
-    val routeWithArg = "$route/{$id}"
+    const val idJadwal = "id"
+    val routeWithArg = "$route/{$idJadwal}"
 }
 object DestinasiUpdateJadwal : AlamatNavigasi {
     override val route = "update"
-    const val id = "idJadwal"
-    val routeWithArg = "$route/{$id}"
+    const val idJadwal = "id"
+    val routeWithArg = "$route/{$idJadwal}"
 }

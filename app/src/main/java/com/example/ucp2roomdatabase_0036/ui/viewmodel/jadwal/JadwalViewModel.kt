@@ -61,18 +61,17 @@ class JadwalViewModel(
     var uiState by mutableStateOf(JadwalUiState())
     val listDokter: Flow<List<Dokter>> = repositoryJadwal.getAllNamaDokter()
 
-    fun updateState(jadwalEvent: JadwalEvent) {
-        uiState = uiState.copy(jadwalEvent = jadwalEvent)
+    fun updateState(JadwalEvent : JadwalEvent) {
+        uiState = uiState.copy(jadwalEvent = JadwalEvent)
     }
 
     private fun validateFields(): Boolean {
         val event = uiState.jadwalEvent
-        val regexNoHp = Regex("^08[0-9]{8,12}\$")
         val errorState = FormErrorStateJdwl(
             id = if (event.id.isNotEmpty()) null else "ID tidak boleh kosong",
             NamaDokter = if (event.NamaDokter.isNotEmpty()) null else "Nama Dokter tidak boleh kosong",
             NamaPasien = if (event.NamaPasien.isNotEmpty()) null else "Nama Pasien tidak boleh kosong",
-            NoHp = if (regexNoHp.matches(event.NoHp)) null else "NoHp harus berupa angka dan dimulai dengan 08",
+            NoHp = if (event.NoHp.isNotEmpty()) null else "NoHp harus berupa angka dan dimulai dengan 08",
             TglKonsultasi = if (event.TglKonsultasi.isNotEmpty()) null else "Tanggal Konsultasi tidak boleh kosong",
             Status = if (event.Status.isNotEmpty()) null else "Status tidak boleh kosong"
         )

@@ -20,7 +20,7 @@ class DetailJadwalViewModel (
     savedStateHandle: SavedStateHandle,
     private val repositoryJadwal: RepositoryJadwal
 ) : ViewModel(){
-    private val _id: String = checkNotNull(savedStateHandle[DestinasiDetailJadwal.id])
+    private val _id: String = checkNotNull(savedStateHandle[DestinasiDetailJadwal.idJadwal])
     val detailUiState: StateFlow<DetailUiState> = repositoryJadwal.getJadwalByid(_id)
         .filterNotNull()
         .map {
@@ -50,13 +50,14 @@ class DetailJadwalViewModel (
             )
         )
 
-    fun DeleteJadwal(){
+    fun DeleteJadwal() {
         detailUiState.value.detailUiEvent.toJadwalEntity().let {
             viewModelScope.launch {
                 repositoryJadwal.DeleteJadwal(it)
             }
         }
     }
+
 
 }
 
@@ -71,6 +72,8 @@ data class DetailUiState(
 
     val isUiEventNotEmpty: Boolean
         get() = detailUiEvent != JadwalEvent()
+
+
 }
 
 // Data class untuk menampung data yang akan ditampilkan di Ui

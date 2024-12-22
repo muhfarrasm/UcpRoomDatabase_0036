@@ -174,7 +174,6 @@ fun FormJadwal(
             text = errorState.NoHp ?: "",
             color = Color.Red
         )
-
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = jadwalEvent.Status,
@@ -266,7 +265,6 @@ fun InsertJadwalView(
         }
     }
     Scaffold(
-        modifier = modifier,
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ){padding  ->
         Column(
