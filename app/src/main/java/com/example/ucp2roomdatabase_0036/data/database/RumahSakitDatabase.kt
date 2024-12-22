@@ -10,20 +10,20 @@ import com.example.ucp2roomdatabase_0036.data.entity.Dokter
 import com.example.ucp2roomdatabase_0036.data.entity.Jadwal
 
 @Database(entities = [Dokter ::class, Jadwal ::class], version = 1, exportSchema = false)
-abstract class RsDatabase : RoomDatabase(){
+abstract class RumahSakitDatabase : RoomDatabase(){
     //aksess database
     abstract fun DokterDao(): DokterDao
     abstract fun JadwalDao(): JadwalDao
 
     companion object{
         @Volatile // nilai variable instance selalu sama
-        private var Instance:RsDatabase? = null
+        private var Instance:RumahSakitDatabase? = null
 
-        fun getDatabase(context: Context): RsDatabase{
+        fun getDatabase(context: Context): RumahSakitDatabase{
             return (Instance ?: synchronized(this){
                 Room.databaseBuilder(
                     context.applicationContext,
-                    RsDatabase::class.java, //class database
+                    RumahSakitDatabase::class.java, //class database
                     "RumahSakitDatabase" //nama database
                 )
                     .build().also { Instance = it }

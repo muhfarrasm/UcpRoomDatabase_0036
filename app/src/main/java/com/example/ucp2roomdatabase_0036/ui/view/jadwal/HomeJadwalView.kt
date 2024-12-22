@@ -1,4 +1,4 @@
-package com.example.ucp2roomdatabase_0036.ui.view.dokter
+package com.example.ucp2roomdatabase_0036.ui.view.jadwal
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
@@ -25,6 +26,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -33,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,33 +47,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ucp2roomdatabase_0036.R
 import com.example.ucp2roomdatabase_0036.data.entity.Dokter
+import com.example.ucp2roomdatabase_0036.data.entity.Jadwal
 import com.example.ucp2roomdatabase_0036.ui.customwidget.TopAppBar
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.PenyediaViewModel
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter.HomeDokterUiState
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter.HomeDokterViewModel
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.HomeJadwalUiState
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.HomeJadwalViewModel
 import kotlinx.coroutines.launch
 
-
-
-fun Color(Spesialis : String): Color{
-    return when (Spesialis) {
-        "Anak" -> Color.Blue
-        "Umum" -> Color.Green
-        "Mata" -> Color.Red
-        else -> Color.Gray
-
-    }
-}
 @OptIn(ExperimentalMaterial3Api :: class)
 @Composable
-fun CardDokter(
-    dktr: Dokter,
+fun CardJadwal(
+    Jdwl: Jadwal,
     modifier: Modifier = Modifier,
     onClick : () -> Unit ={ }
 ){
@@ -91,7 +83,7 @@ fun CardDokter(
                 Icon(imageVector = Icons.Filled.Person, contentDescription = "")
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
-                    text = dktr.NamaDokter,
+                    text = Jdwl.NamaPasien,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
                 )
@@ -101,15 +93,15 @@ fun CardDokter(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ){
-                Icon(imageVector = Icons.Filled.Info, contentDescription = "")
+                Icon(imageVector = Icons.Filled.Person, contentDescription = "")
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
-                    text = "Spesialis: ${dktr.Spesialis}",
-                    color = Color(dktr.Spesialis),
+                    text = Jdwl.NamaDokter,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontSize = 20.sp
                 )
             }
+
             Row (
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -117,7 +109,7 @@ fun CardDokter(
                 Icon(imageVector = Icons.Filled.Home, contentDescription = "")
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
-                    text = dktr.Klinik,
+                    text = Jdwl.TglKonsultasi,
                     fontWeight = FontWeight.Bold,
                 )
             }
@@ -130,8 +122,8 @@ fun CardDokter(
 }
 
 @Composable
-fun ListDokter(
-    listdktr: List<Dokter>,
+fun ListJadwal(
+    listJdwl: List<Jadwal>,
     modifier: Modifier = Modifier,
     onClick: (String) -> Unit = { }
 ){
@@ -139,11 +131,11 @@ fun ListDokter(
         modifier = modifier
     ) {
         items(
-            items = listdktr,
-            itemContent = { dktr ->
-                CardDokter(
-                    dktr = dktr,
-                    onClick = { onClick(dktr.Id) }
+            items = listJdwl,
+            itemContent = { jdwl ->
+                CardJadwal(
+                    Jdwl = jdwl,
+                    onClick = { onClick(jdwl.id)}
                 )
             }
         )
@@ -151,6 +143,64 @@ fun ListDokter(
 
 }
 
+@Composable
+fun BodyHomeJadwalView(
+    homeJadwalUiState: HomeJadwalUiState,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = { }
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val snackBarHostState = remember { SnackbarHostState() }
+    when {
+        homeJadwalUiState.isLoading -> {
+            // Menampilkan Indikator Loading
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        homeJadwalUiState.isError -> {
+            // Menampilkan Snackbar jika terjadi kesalahan
+            LaunchedEffect(homeJadwalUiState.errorMessages) {
+                homeJadwalUiState.errorMessages.let { message ->
+                    coroutineScope.launch {
+                        snackBarHostState.showSnackbar(message) // Tampilkan Snackbar
+                    }
+                }
+            }
+        }
+
+        homeJadwalUiState.listJadwal.isEmpty() -> {
+            // Menampilkan pesan jika daftar dokter kosong
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Tidak Ada Data Jadwal",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+
+        else -> {
+            // Menampilkan daftar dokter jika tidak ada kesalahan
+            ListJadwal(
+                listJdwl = homeJadwalUiState.listJadwal,
+                onClick = {
+                    onClick(it)
+                    println(it)
+                },
+                modifier = modifier
+            )
+        }
+    }
+}
 @Composable
 fun Header(
     namaApp: String,
@@ -220,77 +270,17 @@ fun Header(
     }
 }
 
-@Composable
-fun BodyHomeDktrView(
-    homeDokterUiState: HomeDokterUiState,
-    modifier: Modifier = Modifier,
-    onClick: (String) -> Unit = { }
-) {
-    val coroutineScope = rememberCoroutineScope()
-    val snackBarHostState = remember { SnackbarHostState() }
-    when {
-        homeDokterUiState.isLoading -> {
-            // Menampilkan Indikator Loading
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-
-        homeDokterUiState.isError -> {
-            // Menampilkan Snackbar jika terjadi kesalahan
-            LaunchedEffect(homeDokterUiState.errorMessages) {
-                homeDokterUiState.errorMessages.let { message ->
-                    coroutineScope.launch {
-                        snackBarHostState.showSnackbar(message) // Tampilkan Snackbar
-                    }
-                }
-            }
-        }
-
-        homeDokterUiState.listDktr.isEmpty() -> {
-            // Menampilkan pesan jika daftar dokter kosong
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Tidak Ada Data Dokter",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-        }
-
-        else -> {
-            // Menampilkan daftar dokter jika tidak ada kesalahan
-            ListDokter(
-                listdktr = homeDokterUiState.listDktr,
-                onClick = {
-                    onClick(it)
-                    println(it)
-                },
-                modifier = modifier
-            )
-        }
-    }
-}
-
-
 
 
 @Composable
-fun HomeDokterView(
-    viewModel: HomeDokterViewModel = viewModel(factory = PenyediaViewModel.Factory),
+fun HomeJadwalView(
+    viewModel: HomeJadwalViewModel = viewModel(factory = PenyediaViewModel.Factory),
     onSeeDokter: () -> Unit = { },
     onSeeJadwal: () -> Unit = { },
     onAddJdwl: () -> Unit = { },
-    onAddDktr: () -> Unit = { },
     onDetailClick: (String) -> Unit = { },
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
+
 
 ) {
     Scaffold (
@@ -310,48 +300,46 @@ fun HomeDokterView(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Button(
-                        onClick = onAddDktr,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Gray
-                        ),
-
-                    ) {
-                        Text(
-                            text = "Tambah Dokter",
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-
-
-                    Button(
-                        onClick = onSeeJadwal,
+                        onClick = onSeeDokter,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary
                         )
                     ) {
                         Text(
-                            text = "Jadwal",
-                            color = MaterialTheme.colorScheme.onPrimary
+                            text = "Daftar Dokter",
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
-                }
 
+                    Button(
+                        onClick = onAddJdwl,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Gray
+                        ),
+
+                        ) {
+                        Text(
+                            text = "Tambah Jadwal",
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+
+                }
                 Spacer(modifier = Modifier.height(8.dp))
 
                 TopAppBar(
-                    judul = "Daftar Dokter",
+                    judul = "Daftar Jadwal",
                     showBackButton = false,
                     onBack = { }
                 )
             }
         },
-
     ) {
             innerPadding ->
-        val homeDokterUiState by viewModel.homeUiState.collectAsState()
+        val homeJadwalUiState by viewModel.homeUiState.collectAsState()
 
-        BodyHomeDktrView(
-            homeDokterUiState = homeDokterUiState,
+        BodyHomeJadwalView(
+            homeJadwalUiState = homeJadwalUiState,
             onClick = {
                 onDetailClick(it)
             },
@@ -359,5 +347,3 @@ fun HomeDokterView(
         )
     }
 }
-
-

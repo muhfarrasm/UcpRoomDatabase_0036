@@ -1,5 +1,6 @@
 package com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter
 
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ucp2roomdatabase_0036.data.entity.Dokter
@@ -20,7 +21,7 @@ class HomeDokterViewModel(
         .filterNotNull()
         .map {
             HomeDokterUiState(
-                listMhs = it.toList(),
+                listDktr = it.toList(),
                 isLoading = false,
             )
         }
@@ -48,7 +49,7 @@ class HomeDokterViewModel(
 }
 
 data class HomeDokterUiState(
-    val listMhs: List<Dokter> = listOf(),
+    val listDktr: List<Dokter> = listOf(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val errorMessages: String = ""

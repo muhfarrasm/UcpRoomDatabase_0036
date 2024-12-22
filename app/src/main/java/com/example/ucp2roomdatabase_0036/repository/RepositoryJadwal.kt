@@ -1,6 +1,7 @@
 package com.example.ucp2roomdatabase_0036.repository
 
 
+import com.example.ucp2roomdatabase_0036.data.entity.Dokter
 import com.example.ucp2roomdatabase_0036.data.entity.Jadwal
 import kotlinx.coroutines.flow.Flow
 
@@ -21,5 +22,8 @@ interface RepositoryJadwal {
     //Method ini memanfaatkan fungsi updateMahasiswa dari MahasiswaDao
     suspend fun UpdateJadwal(jadwal: Jadwal)
 
+    fun getAllNamaDokter(): Flow<List<Dokter>>
+
 
 }
+

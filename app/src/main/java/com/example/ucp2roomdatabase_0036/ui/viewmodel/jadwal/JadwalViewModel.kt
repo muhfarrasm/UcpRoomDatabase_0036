@@ -5,18 +5,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ucp2roomdatabase_0036.data.entity.Dokter
 import com.example.ucp2roomdatabase_0036.data.entity.Jadwal
 import com.example.ucp2roomdatabase_0036.repository.RepositoryJadwal
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 //data class variable yang menyimpan
 //data input form
 data class JadwalEvent(
     val id : String ="",
+    val TglKonsultasi : String ="",
     val NamaDokter: String ="",
     val NamaPasien : String ="",
     val NoHp : String ="",
-    val TglKonsultasi : String ="",
     val Status : String =""
 )
 
@@ -24,15 +26,15 @@ data class JadwalEvent(
 fun JadwalEvent.toJadwalEntity(): Jadwal = Jadwal(
 
     id = id,
+    TglKonsultasi = TglKonsultasi,
     NamaDokter = NamaDokter,
     NamaPasien = NamaPasien,
     NoHp = NoHp,
-    TglKonsultasi = TglKonsultasi,
     Status = Status
 )
 
 
-data class FormErrorState(
+data class FormErrorStateJdwl(
     val id: String? = null,
     val NamaDokter: String?= null,
     val NamaPasien: String? = null,
@@ -48,28 +50,30 @@ data class FormErrorState(
 
 data class JadwalUiState(
     val jadwalEvent: JadwalEvent = JadwalEvent(),
-    val isEntryValid: FormErrorState = FormErrorState(),
+    val isEntryValid: FormErrorStateJdwl = FormErrorStateJdwl(),
     val snackBarMessage: String? = null
 )
 
 class JadwalViewModel(
     private val repositoryJadwal: RepositoryJadwal
-) : ViewModel(){
+) : ViewModel() {
+
     var uiState by mutableStateOf(JadwalUiState())
-    fun updateState (jadwalEvent: JadwalEvent){
-        uiState = uiState.copy(
-            jadwalEvent = jadwalEvent,
-        )
+    val listDokter: Flow<List<Dokter>> = repositoryJadwal.getAllNamaDokter()
+
+    fun updateState(jadwalEvent: JadwalEvent) {
+        uiState = uiState.copy(jadwalEvent = jadwalEvent)
     }
 
-    private fun validateFields(): Boolean{
+    private fun validateFields(): Boolean {
         val event = uiState.jadwalEvent
-        val errorState = FormErrorState(
+        val regexNoHp = Regex("^08[0-9]{8,12}\$")
+        val errorState = FormErrorStateJdwl(
             id = if (event.id.isNotEmpty()) null else "ID tidak boleh kosong",
             NamaDokter = if (event.NamaDokter.isNotEmpty()) null else "Nama Dokter tidak boleh kosong",
             NamaPasien = if (event.NamaPasien.isNotEmpty()) null else "Nama Pasien tidak boleh kosong",
-            NoHp = if (event.NoHp.isNotEmpty()) null else "NoHp tidak boleh kosong",
-            TglKonsultasi = if (event.TglKonsultasi.isNotEmpty()) null else "TglKonsultasi tidak boleh kosong",
+            NoHp = if (regexNoHp.matches(event.NoHp)) null else "NoHp harus berupa angka dan dimulai dengan 08",
+            TglKonsultasi = if (event.TglKonsultasi.isNotEmpty()) null else "Tanggal Konsultasi tidak boleh kosong",
             Status = if (event.Status.isNotEmpty()) null else "Status tidak boleh kosong"
         )
         uiState = uiState.copy(isEntryValid = errorState)
@@ -79,30 +83,33 @@ class JadwalViewModel(
     fun saveData() {
         val currentEvent = uiState.jadwalEvent
 
-        if (validateFields()){
+        if (validateFields()) {
             viewModelScope.launch {
                 try {
                     repositoryJadwal.InsertJadwal(currentEvent.toJadwalEntity())
                     uiState = uiState.copy(
                         snackBarMessage = "Data berhasil disimpan",
                         jadwalEvent = JadwalEvent(),
-                        isEntryValid = FormErrorState()
+                        isEntryValid = FormErrorStateJdwl()
                     )
-                }catch (e: Exception) {
+                } catch (e: Exception) {
                     uiState = uiState.copy(
-                        snackBarMessage = "Data gagal disimpan"
+                        snackBarMessage = "Data gagal disimpan: ${e.message ?: "Kesalahan tidak diketahui"}"
                     )
-
                 }
             }
-        }
-        else{
+        } else {
             uiState = uiState.copy(
-                snackBarMessage = "Input tidak valid. periksa kembali data anda"
+                snackBarMessage = "Input tidak valid. Periksa kembali data Anda"
             )
         }
     }
-    fun resetSnackBarMassage(){
+
+    fun resetSnackBarMessage() {
         uiState = uiState.copy(snackBarMessage = null)
     }
+
+
 }
+
+

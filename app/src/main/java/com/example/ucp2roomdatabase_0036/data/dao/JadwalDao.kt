@@ -19,6 +19,10 @@ interface JadwalDao {
     @Query("SELECT * FROM Jadwal WHERE id = :id")
     fun getJadwalByid(id: String): Flow<Jadwal?>
 
+    @Query("SELECT * FROM dokter ORDER BY NamaDokter DESC")
+    fun getAllNamaDokter(): Flow<List<Dokter>>
+
+
     @Insert
     suspend fun InsertJadwal(jadwal: Jadwal)
 
@@ -27,4 +31,5 @@ interface JadwalDao {
 
     @Update
     suspend fun UpdateJadwal(jadwal: Jadwal)
+
 }

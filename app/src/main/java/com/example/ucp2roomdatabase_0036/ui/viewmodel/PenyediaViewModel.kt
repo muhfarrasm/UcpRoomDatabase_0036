@@ -8,6 +8,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.ucp2roomdatabase_0036.AyoSehatApp
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter.DokterViewModel
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter.HomeDokterViewModel
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.HomeJadwalViewModel
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.JadwalViewModel
 
 object PenyediaViewModel{
     val Factory = viewModelFactory {
@@ -22,6 +24,21 @@ object PenyediaViewModel{
                 ayoSehatApp().containerApp.repositoryDokter
             )
         }
+
+        initializer {
+            JadwalViewModel(
+                ayoSehatApp().containerApp.repositoryJadwal
+            )
+        }
+
+        initializer {
+            HomeJadwalViewModel(
+                ayoSehatApp().containerApp.repositoryJadwal
+            )
+        }
+
+
+
     }
 }
 

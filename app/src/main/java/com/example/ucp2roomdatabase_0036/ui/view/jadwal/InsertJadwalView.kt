@@ -72,6 +72,27 @@ fun FormJadwal(
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
+            value = jadwalEvent.id,
+            onValueChange = {
+                onValueChange(jadwalEvent.copy(id = it))
+            },
+            label = {
+                Text("Id")
+            },
+            isError = errorState.id != null,
+            placeholder = {
+                Text("Masukkan Id Jadwal")
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            shape = RoundedCornerShape(10.dp)
+        )
+        Text(
+            text = errorState.id ?: "",
+            color = Color.Red
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
             value = jadwalEvent.NamaPasien,
             onValueChange = {
                 onValueChange(jadwalEvent.copy(NamaPasien = it))
@@ -90,8 +111,6 @@ fun FormJadwal(
             text = errorState.NamaPasien ?: "",
             color = Color.Red
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -114,8 +133,6 @@ fun FormJadwal(
             color = Color.Red
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         // Mengambil Data Nama Dokter dari ViewModel
         LaunchedEffect (Unit) {
             viewModel.listDokter.collect { dokterList ->
@@ -137,8 +154,6 @@ fun FormJadwal(
             color = Color.Red
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = jadwalEvent.NoHp,
@@ -159,8 +174,6 @@ fun FormJadwal(
             text = errorState.NoHp ?: "",
             color = Color.Red
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -248,7 +261,7 @@ fun InsertJadwalView(
         uiState.snackBarMessage?.let { message ->
             coroutineScope.launch {
                 snackBarHostState.showSnackbar(message)
-                viewModel.resetSnackBarMassage()
+                viewModel.resetSnackBarMessage()
             }
         }
     }
