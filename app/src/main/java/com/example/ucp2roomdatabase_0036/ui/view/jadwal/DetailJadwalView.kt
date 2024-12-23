@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -36,9 +35,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ucp2roomdatabase_0036.data.entity.Jadwal
 import com.example.ucp2roomdatabase_0036.ui.customwidget.TopAppBar
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.PenyediaViewModel
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.DetailJadwalViewModel
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.DetailJdlViewModel
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.DetailUiState
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.toJadwalEntity
+
 
 @Composable
 private fun DeleteConfirmationDialog(
@@ -105,22 +105,23 @@ fun ItemDetailJadwal(
         Column (
             modifier = Modifier.padding(16.dp)
         ){
-            ComponentDetailJadwal(judul = "id", isinya = jadwal.id)
+            ComponentDetailJadwal(judul = "NIM", isinya = jadwal.id)
             Spacer(modifier = Modifier.padding(4.dp))
 
-            ComponentDetailJadwal(judul = "Nama Pasien", isinya = jadwal.NamaPasien)
+            ComponentDetailJadwal(judul = "Nama", isinya = jadwal.NamaPasien)
             Spacer(modifier = Modifier.padding(4.dp))
 
-            ComponentDetailJadwal(judul = "Tanggal Konsultasi", isinya = jadwal.TglKonsultasi)
+            ComponentDetailJadwal(judul = "Alamat", isinya = jadwal.NamaDokter)
             Spacer(modifier = Modifier.padding(4.dp))
 
-            ComponentDetailJadwal(judul = "Nama Dokter", isinya = jadwal.NamaDokter)
+            ComponentDetailJadwal(judul = "Jenis Kelamin", isinya = jadwal.TglKonsultasi)
             Spacer(modifier = Modifier.padding(4.dp))
 
-            ComponentDetailJadwal(judul = "No HP", isinya = jadwal.NoHp)
+
+            ComponentDetailJadwal(judul = "Kelas", isinya = jadwal.NoHp)
             Spacer(modifier = Modifier.padding(4.dp))
 
-            ComponentDetailJadwal(judul = "Status", isinya = jadwal.Status)
+            ComponentDetailJadwal(judul = "Angkatan", isinya = jadwal.Status)
             Spacer(modifier = Modifier.padding(4.dp))
 
         }
@@ -128,11 +129,10 @@ fun ItemDetailJadwal(
 }
 
 @Composable
-fun BodyDetailJadwal(
+fun BodyDetailMhs(
     modifier: Modifier = Modifier,
-    detailUiState: DetailUiState = DetailUiState(),
-    onDeleteClick: () -> Unit = { } ,
-    onEditClick: (String) -> Unit = { }
+    detailUiState: DetailUiState =DetailUiState(),
+    onDeleteClick: () -> Unit = { }
 ) {
     var deleteConfirmationReuired by rememberSaveable { mutableStateOf(false) }
     when {
@@ -172,10 +172,6 @@ fun BodyDetailJadwal(
                         modifier = Modifier.padding(8.dp)
                     )
                 }
-
-
-
-
             }
         }
 
@@ -196,7 +192,7 @@ fun BodyDetailJadwal(
 @Composable
 fun DetailJadwalView(
     modifier: Modifier = Modifier,
-    viewModel: DetailJadwalViewModel = viewModel(factory = PenyediaViewModel.Factory),
+    viewModel: DetailJdlViewModel = viewModel(factory = PenyediaViewModel.Factory),
     onBack: () -> Unit = { },
     onEditClick: (String) -> Unit = { },
     onDeleteClick: () -> Unit = { }
@@ -205,7 +201,7 @@ fun DetailJadwalView(
         modifier = Modifier,
         topBar = {
             TopAppBar(
-                judul = "Detail Jadwal",
+                judul = "Detail Mahasiswa",
                 showBackButton = true,
                 onBack = onBack,
 
@@ -220,20 +216,19 @@ fun DetailJadwalView(
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Jadwal"
+                    contentDescription = "Edit Mahasiswa"
                 )
             }
-        },
-
+        }
     ) {
             innerPadding ->
         val detailUiState by viewModel.detailUiState.collectAsState()
 
-        BodyDetailJadwal(
+        BodyDetailMhs(
             modifier = modifier.padding(innerPadding),
             detailUiState = detailUiState,
             onDeleteClick = {
-                viewModel.DeleteJadwal()
+                viewModel.deletejadwal()
                 onDeleteClick()
             }
         )

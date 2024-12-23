@@ -24,10 +24,10 @@ object DestinasiInsertJadwal : AlamatNavigasi {
 object DestinasiDetailJadwal : AlamatNavigasi {
     override val route = "detail"
     const val idJadwal = "id"
-    val routeWithArg = "$route/{$idJadwal}"
+    val routeWithArgs = "$route/{$idJadwal}"
 }
 object DestinasiUpdateJadwal : AlamatNavigasi {
     override val route = "update"
     const val idJadwal = "id"
-    val routeWithArg = "$route/{$idJadwal}"
+    val routeWithArgs = "$route/{$idJadwal}"
 }

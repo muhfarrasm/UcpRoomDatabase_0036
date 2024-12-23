@@ -1,8 +1,6 @@
 package com.example.ucp2roomdatabase_0036.repository
 
-import androidx.room.Delete
-import androidx.room.Update
-import com.example.ucp2roomdatabase_0036.data.dao.DokterDao
+
 import com.example.ucp2roomdatabase_0036.data.dao.JadwalDao
 import com.example.ucp2roomdatabase_0036.data.entity.Dokter
 import com.example.ucp2roomdatabase_0036.data.entity.Jadwal
@@ -26,6 +24,7 @@ class LocalRepositoryJadwal(
         return jadwalDao.getAllJadwal()
 
     }
+
     override fun getJadwalByid(id: String): Flow<Jadwal?> {
         return jadwalDao.getJadwalByid(id)
     }

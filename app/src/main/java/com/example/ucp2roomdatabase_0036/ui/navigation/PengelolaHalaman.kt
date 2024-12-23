@@ -16,6 +16,8 @@ import com.example.ucp2roomdatabase_0036.ui.view.jadwal.HomeJadwalView
 import com.example.ucp2roomdatabase_0036.ui.view.jadwal.InsertJadwalView
 import com.example.ucp2roomdatabase_0036.ui.view.jadwal.UpdateJadwalView
 
+//import com.example.ucp2roomdatabase_0036.ui.view.jadwal.UpdateJadwalView
+
 @Composable
 fun PengelolaHalaman(
     navController: NavHostController = rememberNavController(),
@@ -89,7 +91,7 @@ fun PengelolaHalaman(
         }
 
         composable(
-            DestinasiDetailJadwal.routeWithArg,
+            DestinasiDetailJadwal.routeWithArgs,
             arguments = listOf(
                 navArgument(DestinasiDetailJadwal.idJadwal) {
                     type = NavType.StringType
@@ -102,20 +104,21 @@ fun PengelolaHalaman(
                     onBack = {
                         navController.popBackStack()
                     },
-                    onEditClick = {
-                        navController.navigate("${DestinasiUpdateJadwal.route}/$it")
-                    },
 
+                    onEditClick = {
+                        navController.navigate("${DestinasiUpdateJadwal.route}/$id")
+                    },
+                    modifier = modifier,
                     onDeleteClick = {
                         navController.popBackStack()
                     },
-                    modifier = modifier
+
                 )
             }
         }
 
         composable(
-            DestinasiUpdateJadwal.routeWithArg,
+            DestinasiUpdateJadwal.routeWithArgs,
             arguments = listOf(
                 navArgument(DestinasiUpdateJadwal.idJadwal){
                     type = NavType.StringType
@@ -132,6 +135,9 @@ fun PengelolaHalaman(
                 modifier = modifier
             )
         }
+
+
+
 
     }
 }

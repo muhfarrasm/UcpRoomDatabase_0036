@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.ucp2roomdatabase_0036.data.entity.Jadwal
 import com.example.ucp2roomdatabase_0036.repository.RepositoryJadwal
 import com.example.ucp2roomdatabase_0036.ui.navigation.DestinasiUpdateJadwal
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter.FormErrorState
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -39,16 +38,15 @@ class UpdateJadwalViewModel(
 
     fun validateFields(): Boolean {
         val event = updateUIState.jadwalEvent
-
         val errorState = FormErrorStateJdwl(
-            id = if (event.id.isNotEmpty()) null else "idJdl tidak boleh kosong",
-            NamaDokter = if (event.NamaDokter.isNotEmpty()) null else "Nama Dokter tidak boleh kosong",
-            NamaPasien = if (event.NamaPasien.isNotEmpty()) null else "Nama Pasien tidak boleh kosong",
-            NoHp = if (event.NoHp.isNotEmpty()) null else "noHp tidak boleh kosong",
-            TglKonsultasi = if (event.TglKonsultasi.isNotEmpty()) null else "tanggalKonsul tidak boleh kosong",
-            Status = if (event.Status.isNotEmpty()) null else "Status tidak boleh kosong",
+            id = if (event.id.isNotEmpty()) null else "NIM Tidak Boleh Kosong",
+            NamaPasien = if (event.NamaPasien.isNotEmpty()) null else "Nama Tidak Boleh Kosong",
+            NamaDokter = if (event.NamaDokter.isNotEmpty()) null else "Jenis Kelamin Tidak Boleh Kosong",
+            TglKonsultasi = if (event.TglKonsultasi.isNotEmpty()) null else "Alamat Tidak Boleh Kosong",
+            NoHp = if (event.NoHp.isNotEmpty()) null else "Kelas Tidak Boleh Kosong",
+            Status = if (event.Status.isNotEmpty()) null else "Angkatan Tidak Boleh Kosong",
+        )
 
-            )
         updateUIState = updateUIState.copy(isEntryValid = errorState)
         return errorState.isValid()
     }
@@ -84,5 +82,5 @@ class UpdateJadwalViewModel(
 }
 
 fun Jadwal.toUIStateJadwal(): JadwalUiState = JadwalUiState(
-    jadwalEvent = this.toDetailUiEvent(),
+    jadwalEvent = this.toDetaiJadwalUiEvent(),
 )

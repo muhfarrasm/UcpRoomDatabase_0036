@@ -1,5 +1,7 @@
 package com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal
 
+
+
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,16 +18,16 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class DetailJadwalViewModel (
+class DetailJdlViewModel(
     savedStateHandle: SavedStateHandle,
     private val repositoryJadwal: RepositoryJadwal
 ) : ViewModel(){
-    private val _id: String = checkNotNull(savedStateHandle[DestinasiDetailJadwal.idJadwal])
-    val detailUiState: StateFlow<DetailUiState> = repositoryJadwal.getJadwalByid(_id)
+    private val _idjdl: String = checkNotNull(savedStateHandle[DestinasiDetailJadwal.idJadwal])
+    val detailUiState: StateFlow<DetailUiState> = repositoryJadwal.getJadwalByid(_idjdl)
         .filterNotNull()
         .map {
             DetailUiState(
-                detailUiEvent = it.toDetailUiEvent(),
+                detailUiEvent = it.toDetaiJadwalUiEvent(),
                 isLoading = false,
             )
         }
@@ -50,14 +52,13 @@ class DetailJadwalViewModel (
             )
         )
 
-    fun DeleteJadwal() {
+    fun deletejadwal(){
         detailUiState.value.detailUiEvent.toJadwalEntity().let {
             viewModelScope.launch {
                 repositoryJadwal.DeleteJadwal(it)
             }
         }
     }
-
 
 }
 
@@ -72,22 +73,19 @@ data class DetailUiState(
 
     val isUiEventNotEmpty: Boolean
         get() = detailUiEvent != JadwalEvent()
-
-
 }
 
 // Data class untuk menampung data yang akan ditampilkan di Ui
 
 //memindahkan data dari Entity ke ui
-fun Jadwal.toDetailUiEvent(): JadwalEvent{
+fun Jadwal.toDetaiJadwalUiEvent(): JadwalEvent{
     return JadwalEvent(
         id = id,
-        TglKonsultasi = TglKonsultasi,
-        NamaDokter = NamaDokter,
         NamaPasien = NamaPasien,
+        NamaDokter = NamaDokter,
+        TglKonsultasi = TglKonsultasi,
         NoHp = NoHp,
         Status = Status
 
     )
 }
-

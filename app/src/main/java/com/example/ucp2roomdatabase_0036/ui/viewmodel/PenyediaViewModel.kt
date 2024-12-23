@@ -6,12 +6,16 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.ucp2roomdatabase_0036.AyoSehatApp
+import com.example.ucp2roomdatabase_0036.ui.view.jadwal.UpdateJadwalView
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter.DokterViewModel
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter.HomeDokterViewModel
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.DetailJadwalViewModel
+
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.DetailJdlViewModel
+//import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.DetailJadwalViewModel
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.HomeJadwalViewModel
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.JadwalViewModel
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.UpdateJadwalViewModel
+
 
 object PenyediaViewModel{
     val Factory = viewModelFactory {
@@ -40,7 +44,7 @@ object PenyediaViewModel{
         }
 
         initializer {
-            DetailJadwalViewModel(
+            DetailJdlViewModel(
                 createSavedStateHandle(),
                 ayoSehatApp().containerApp.repositoryJadwal
             )
@@ -52,6 +56,14 @@ object PenyediaViewModel{
                 ayoSehatApp().containerApp.repositoryJadwal
             )
         }
+
+
+
+
+
+
+
+
 
     }
 }

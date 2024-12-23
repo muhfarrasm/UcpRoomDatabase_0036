@@ -1,6 +1,7 @@
 package com.example.ucp2roomdatabase_0036.repository
 
 
+
 import androidx.room.Query
 import com.example.ucp2roomdatabase_0036.data.entity.Dokter
 import com.example.ucp2roomdatabase_0036.data.entity.Jadwal
@@ -29,5 +30,5 @@ interface RepositoryJadwal {
     fun getAllNamaDokter(): Flow<List<Dokter>>
 
 
-}
 
+}
