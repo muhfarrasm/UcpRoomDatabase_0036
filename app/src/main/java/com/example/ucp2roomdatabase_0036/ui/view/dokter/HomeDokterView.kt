@@ -162,8 +162,8 @@ fun Header(
             .background(
                 brush = Brush.horizontalGradient(
                     colors = listOf(
-                        Color(0xFF6200EE),
-                        Color(0xFF3700B3)
+                        Color(0xFF6700ff),
+                        Color(0xFF6700ff)
                     )
                 )
             )
