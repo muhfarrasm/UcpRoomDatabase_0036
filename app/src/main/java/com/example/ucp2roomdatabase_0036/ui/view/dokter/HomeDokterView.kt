@@ -181,7 +181,7 @@ fun Header(
             ) {
                 Image(
                     painter = painterResource(ID),
-                    contentDescription = "Profil Perusahaan",
+                    contentDescription = "profil",
                     modifier = Modifier
                         .size(70.dp)
                         .clip(RoundedCornerShape(35.dp))
@@ -202,7 +202,7 @@ fun Header(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
-                        imageVector = Icons.Default.Person,
+                        imageVector = Icons.Default.Home,
                         contentDescription = "ikon",
                         tint = Color.White
                     )
@@ -210,11 +210,7 @@ fun Header(
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                Text(
-                    text = "Ayo Sehatkan Gen Z",
-                    fontSize = 14.sp,
-                    color = Color.White.copy(alpha = 0.8f)
-                )
+
             }
         }
     }
