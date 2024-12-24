@@ -1,6 +1,4 @@
-package com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal
-
-
+package com.example.ucp2roomdatabase_0036.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -18,74 +16,67 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class DetailJdlViewModel(
+class DetailJadwalViewModel(
     savedStateHandle: SavedStateHandle,
-    private val repositoryJadwal: RepositoryJadwal
-) : ViewModel(){
-    private val _idjdl: String = checkNotNull(savedStateHandle[DestinasiDetailJadwal.idJadwal])
-    val detailUiState: StateFlow<DetailUiState> = repositoryJadwal.getJadwalByid(_idjdl)
+    private val repositoryJadwal: RepositoryJadwal,
+
+    ) : ViewModel() {
+    private val _id: String = checkNotNull(savedStateHandle[DestinasiDetailJadwal.idJadwal])
+
+    val detailUiState: StateFlow<DetailJadwalUiState> = repositoryJadwal.getJadwalByid(_id)
         .filterNotNull()
         .map {
-            DetailUiState(
-                detailUiEvent = it.toDetaiJadwalUiEvent(),
+            DetailJadwalUiState(
+                detailUiEvent = it.toDetailUiEvent(),
                 isLoading = false,
             )
         }
         .onStart {
-            emit(DetailUiState(isLoading = true))
+            emit(DetailJadwalUiState(isLoading = true))
             delay(600)
         }
         .catch {
             emit(
-                DetailUiState(
+                DetailJadwalUiState(
                     isLoading = false,
                     isError = true,
-                    errorMessage = it.message ?:"Terjadi Kesalahan"
+                    errorMessage = it.message ?: "Terjadi Kesalahan"
                 )
             )
         }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = DetailUiState(
-                isLoading = true,
-            )
+            started = SharingStarted.WhileSubscribed(2000),
+            initialValue = DetailJadwalUiState(
+                isLoading = true
+            ),
         )
-
-    fun deletejadwal(){
+    fun deletejadwal() {
         detailUiState.value.detailUiEvent.toJadwalEntity().let {
             viewModelScope.launch {
-                repositoryJadwal.DeleteJadwal(it)
+                repositoryJadwal.deletejdwl(it)
             }
         }
     }
-
 }
-
-data class DetailUiState(
+data class DetailJadwalUiState(
     val detailUiEvent: JadwalEvent = JadwalEvent(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val errorMessage: String = ""
 ){
     val isUiEventEmpty: Boolean
-        get() = detailUiEvent == JadwalEvent()
-
+        get()= detailUiEvent == JadwalEvent()
     val isUiEventNotEmpty: Boolean
         get() = detailUiEvent != JadwalEvent()
 }
-
-// Data class untuk menampung data yang akan ditampilkan di Ui
-
-//memindahkan data dari Entity ke ui
-fun Jadwal.toDetaiJadwalUiEvent(): JadwalEvent{
+fun Jadwal.toDetailUiEvent(): JadwalEvent {
     return JadwalEvent(
         id = id,
-        NamaPasien = NamaPasien,
         NamaDokter = NamaDokter,
-        TglKonsultasi = TglKonsultasi,
+        NamaPasien = NamaPasien,
         NoHp = NoHp,
+        TglKonsultasi = TglKonsultasi,
         Status = Status
-
     )
 }
