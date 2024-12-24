@@ -21,7 +21,7 @@ interface RepositoryJadwal {
     suspend fun InsertJadwal(jadwal: Jadwal)
 
     //Method ini memanfaatkan fungsi deleteMahasiswa dari MahasiswaDao
-    suspend fun DeleteJadwal(jadwal: Jadwal)
+    suspend fun deletejdwl(jadwal: Jadwal)
 
     //Method ini memanfaatkan fungsi updateMahasiswa dari MahasiswaDao
     suspend fun UpdateJadwal(jadwal: Jadwal)
