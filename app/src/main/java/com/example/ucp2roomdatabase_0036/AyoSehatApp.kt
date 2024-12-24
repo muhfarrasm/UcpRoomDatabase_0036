@@ -1,13 +1,17 @@
 package com.example.ucp2roomdatabase_0036
 
 import android.app.Application
-import com.example.ucp2roomdatabase_0036.dependenciesinjection.ContainerApp
+import com.example.ucp2roomdatabase_0036.dependenciesinjection.DokterApp
+import com.example.ucp2roomdatabase_0036.dependenciesinjection.JadwalApp
 
 class AyoSehatApp : Application(){
-    lateinit var containerApp: ContainerApp
+    lateinit var dokterApp: DokterApp
+    lateinit var jadwalApp: JadwalApp
 
     override fun onCreate() {
         super.onCreate()
-        containerApp = ContainerApp(this)
+        dokterApp = DokterApp(this)
+        jadwalApp = JadwalApp(this)
+
     }
 }
