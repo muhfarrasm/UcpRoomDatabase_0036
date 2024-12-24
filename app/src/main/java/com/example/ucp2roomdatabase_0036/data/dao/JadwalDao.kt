@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface JadwalDao {
 
     //getAll Jadwal
-    @Query("SELECT * FROM Jadwal ORDER BY id ASC")
+    @Query("SELECT * FROM Jadwal ORDER BY NamaPasien ASC")
     fun getAllJadwal(): Flow<List<Jadwal>>
 
     @Query("SELECT * FROM Jadwal WHERE id = :id")
@@ -27,7 +27,7 @@ interface JadwalDao {
     suspend fun InsertJadwal(jadwal: Jadwal)
 
     @Delete
-    suspend fun DeleteJadwal(jadwal: Jadwal)
+    suspend fun deleteJadwal(jadwal: Jadwal)
 
     @Update
     suspend fun UpdateJadwal(jadwal: Jadwal)
