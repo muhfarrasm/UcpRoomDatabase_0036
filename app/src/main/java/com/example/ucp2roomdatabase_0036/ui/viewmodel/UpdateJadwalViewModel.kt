@@ -1,4 +1,4 @@
-package com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal
+package com.example.ucp2roomdatabase_0036.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,14 +32,14 @@ class UpdateJadwalViewModel(
 
     fun updateState(jadwalEvent: JadwalEvent) {
         updateUIState = updateUIState.copy(
-            jadwalEvent = jadwalEvent,
+            jadwalEvent = JadwalEvent(),
         )
     }
 
     fun validateFields(): Boolean {
         val event = updateUIState.jadwalEvent
         val errorState = FormErrorStateJdwl(
-            id = if (event.id.isNotEmpty()) null else "NIM Tidak Boleh Kosong",
+            id = if (event.id.isNotEmpty()) null else "ID Tidak Boleh Kosong",
             NamaPasien = if (event.NamaPasien.isNotEmpty()) null else "Nama Tidak Boleh Kosong",
             NamaDokter = if (event.NamaDokter.isNotEmpty()) null else "Jenis Kelamin Tidak Boleh Kosong",
             TglKonsultasi = if (event.TglKonsultasi.isNotEmpty()) null else "Alamat Tidak Boleh Kosong",
@@ -82,5 +82,5 @@ class UpdateJadwalViewModel(
 }
 
 fun Jadwal.toUIStateJadwal(): JadwalUiState = JadwalUiState(
-    jadwalEvent = this.toDetaiJadwalUiEvent(),
+    jadwalEvent = this.toDetailUiEvent(),
 )

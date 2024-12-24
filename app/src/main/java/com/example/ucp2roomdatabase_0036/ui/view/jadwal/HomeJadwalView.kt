@@ -54,9 +54,9 @@ import com.example.ucp2roomdatabase_0036.R
 import com.example.ucp2roomdatabase_0036.data.entity.Dokter
 import com.example.ucp2roomdatabase_0036.data.entity.Jadwal
 import com.example.ucp2roomdatabase_0036.ui.customwidget.TopAppBar
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.HomeJadwalUiState
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.HomeJadwalViewModel
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.PenyediaViewModel
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.HomeJadwalUiState
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.HomeJadwalViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api :: class)

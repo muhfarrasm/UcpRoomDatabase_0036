@@ -1,4 +1,4 @@
-package com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal
+package com.example.ucp2roomdatabase_0036.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +11,63 @@ import com.example.ucp2roomdatabase_0036.repository.RepositoryJadwal
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
+
+class JadwalViewModel(
+    private val repositoryJadwal: RepositoryJadwal
+) : ViewModel() {
+
+    var uiState by mutableStateOf(JadwalUiState())
+    val listDokter: Flow<List<Dokter>> = repositoryJadwal.getAllNamaDokter()
+
+    fun updateState(jadwalEvent : JadwalEvent) {
+        uiState = uiState.copy(jadwalEvent = jadwalEvent)
+    }
+
+    private fun validateFields(): Boolean {
+        val event = uiState.jadwalEvent
+        val errorState = FormErrorStateJdwl(
+            id = if (event.id.isNotEmpty()) null else "ID tidak boleh kosong",
+            NamaDokter = if (event.NamaDokter.isNotEmpty()) null else "Nama Dokter tidak boleh kosong",
+            NamaPasien = if (event.NamaPasien.isNotEmpty()) null else "Nama Pasien tidak boleh kosong",
+            NoHp = if (event.NoHp.isNotEmpty()) null else "NoHp harus berupa angka dan dimulai dengan 08",
+            TglKonsultasi = if (event.TglKonsultasi.isNotEmpty()) null else "Tanggal Konsultasi tidak boleh kosong",
+            Status = if (event.Status.isNotEmpty()) null else "Status tidak boleh kosong"
+        )
+        uiState = uiState.copy(isEntryValid = errorState)
+        return errorState.isValid()
+    }
+
+    fun saveData() {
+        val currentEvent = uiState.jadwalEvent
+
+        if (validateFields()) {
+            viewModelScope.launch {
+                try {
+                    repositoryJadwal.InsertJadwal(currentEvent.toJadwalEntity())
+                    uiState = uiState.copy(
+                        snackBarMessage = "Data berhasil disimpan",
+                        jadwalEvent = JadwalEvent(),
+                        isEntryValid = FormErrorStateJdwl()
+                    )
+                } catch (e: Exception) {
+                    uiState = uiState.copy(
+                        snackBarMessage = "Data gagal disimpan"
+                    )
+                }
+            }
+        } else {
+            uiState = uiState.copy(
+                snackBarMessage = "Input tidak valid. Periksa kembali data Anda"
+            )
+        }
+    }
+
+    fun resetSnackBarMessage() {
+        uiState = uiState.copy(snackBarMessage = null)
+    }
+
+
+}
 //data class variable yang menyimpan
 //data input form
 data class JadwalEvent(
@@ -49,66 +106,8 @@ data class FormErrorStateJdwl(
 }
 
 data class JadwalUiState(
-    val jadwalEvent: JadwalEvent = JadwalEvent(),
+    val jadwalEvent: JadwalEvent= JadwalEvent(),
     val isEntryValid: FormErrorStateJdwl = FormErrorStateJdwl(),
     val snackBarMessage: String? = null
 )
-
-class JadwalViewModel(
-    private val repositoryJadwal: RepositoryJadwal
-) : ViewModel() {
-
-    var uiState by mutableStateOf(JadwalUiState())
-    val listDokter: Flow<List<Dokter>> = repositoryJadwal.getAllNamaDokter()
-
-    fun updateState(JadwalEvent : JadwalEvent) {
-        uiState = uiState.copy(jadwalEvent = JadwalEvent)
-    }
-
-    private fun validateFields(): Boolean {
-        val event = uiState.jadwalEvent
-        val errorState = FormErrorStateJdwl(
-            id = if (event.id.isNotEmpty()) null else "ID tidak boleh kosong",
-            NamaDokter = if (event.NamaDokter.isNotEmpty()) null else "Nama Dokter tidak boleh kosong",
-            NamaPasien = if (event.NamaPasien.isNotEmpty()) null else "Nama Pasien tidak boleh kosong",
-            NoHp = if (event.NoHp.isNotEmpty()) null else "NoHp harus berupa angka dan dimulai dengan 08",
-            TglKonsultasi = if (event.TglKonsultasi.isNotEmpty()) null else "Tanggal Konsultasi tidak boleh kosong",
-            Status = if (event.Status.isNotEmpty()) null else "Status tidak boleh kosong"
-        )
-        uiState = uiState.copy(isEntryValid = errorState)
-        return errorState.isValid()
-    }
-
-    fun saveData() {
-        val currentEvent = uiState.jadwalEvent
-
-        if (validateFields()) {
-            viewModelScope.launch {
-                try {
-                    repositoryJadwal.InsertJadwal(currentEvent.toJadwalEntity())
-                    uiState = uiState.copy(
-                        snackBarMessage = "Data berhasil disimpan",
-                        jadwalEvent = JadwalEvent(),
-                        isEntryValid = FormErrorStateJdwl()
-                    )
-                } catch (e: Exception) {
-                    uiState = uiState.copy(
-                        snackBarMessage = "Data gagal disimpan: ${e.message ?: "Kesalahan tidak diketahui"}"
-                    )
-                }
-            }
-        } else {
-            uiState = uiState.copy(
-                snackBarMessage = "Input tidak valid. Periksa kembali data Anda"
-            )
-        }
-    }
-
-    fun resetSnackBarMessage() {
-        uiState = uiState.copy(snackBarMessage = null)
-    }
-
-
-}
-
 

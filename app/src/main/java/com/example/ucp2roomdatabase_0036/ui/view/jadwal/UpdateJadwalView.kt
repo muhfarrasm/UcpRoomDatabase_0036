@@ -12,11 +12,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ucp2roomdatabase_0036.ui.customwidget.TopAppBar
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.PenyediaViewModel
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.UpdateJadwalViewModel
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.UpdateJadwalViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,14 +30,15 @@ fun UpdateJadwalView(
     modifier: Modifier = Modifier,
     viewModel: UpdateJadwalViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
-    val uiState = viewModel.updateUIState // Ambil UI State Dari ViewModel
+    val uiJadState = viewModel.updateUIState // Ambil UI State Dari ViewModel
     val snackBarHostState = remember { SnackbarHostState() } // Ambil Snackbar Host State Dari ViewModel
     val coroutineScope = rememberCoroutineScope() // Ambil Coroutine Scope Dari ViewModel
 
     // Observasi Perubahan Snackbar Message Dari ViewModel
-    LaunchedEffect(uiState.snackBarMessage) {
+
+    LaunchedEffect(uiJadState.snackBarMessage) {
         println("LaunchedEffect Triggered")
-        uiState.snackBarMessage?.let { message ->
+        uiJadState.snackBarMessage?.let { message ->
             println("Snackbar Message Received: $message")
             coroutineScope.launch {
                 println("Launching Coroutine For Snackbar")
@@ -54,7 +56,7 @@ fun UpdateJadwalView(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         topBar = {
             TopAppBar(
-                judul = "Edit Mahasiswa",
+                judul = "Edit Jadwal",
                 showBackButton = true,
                 onBack = onBack
             )
@@ -64,12 +66,12 @@ fun UpdateJadwalView(
         Column (
             modifier = Modifier.padding(padding)
                 .fillMaxSize()
-                .padding(4.dp)
+                .padding(16.dp)
         ){
-            InsertBodyJadwal(
-                uiState = uiState,
-                onValueChange = { updatedEvent ->
-                    viewModel.updateState(updatedEvent) // Update State Pada ViewModel
+            InsertBodyJadwal (
+                uiState = uiJadState,
+                onValueChange = { updatedJadEvent ->
+                    viewModel.updateState(updatedJadEvent) // Update State Pada ViewModel
                 },
                 onClick = {
                     coroutineScope.launch {
