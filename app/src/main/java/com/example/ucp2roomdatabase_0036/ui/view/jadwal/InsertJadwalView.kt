@@ -1,25 +1,15 @@
 package com.example.ucp2roomdatabase_0036.ui.view.jadwal
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -37,22 +27,18 @@ import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ucp2roomdatabase_0036.ui.customwidget.DynamicSelectedTextField
 import com.example.ucp2roomdatabase_0036.ui.customwidget.TopAppBar
-import com.example.ucp2roomdatabase_0036.ui.view.dokter.InsertBodyDokter
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.FormErrorStateJdwl
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.JadwalEvent
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.JadwalUiState
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.JadwalViewModel
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.PenyediaViewModel
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter.DokterViewModel
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.FormErrorStateJdwl
 
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.JadwalEvent
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.JadwalUiState
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.JadwalViewModel
 import kotlinx.coroutines.launch
 
 @Composable

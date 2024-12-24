@@ -51,9 +51,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ucp2roomdatabase_0036.R
 import com.example.ucp2roomdatabase_0036.data.entity.Dokter
 import com.example.ucp2roomdatabase_0036.ui.customwidget.TopAppBar
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.HomeDokterUiState
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.HomeDokterViewModel
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.PenyediaViewModel
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter.HomeDokterUiState
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter.HomeDokterViewModel
 import kotlinx.coroutines.launch
 
 
@@ -63,6 +63,7 @@ fun Color(Spesialis : String): Color{
         "Anak" -> Color.Blue
         "Umum" -> Color.Green
         "Mata" -> Color.Red
+        "Gigi" -> Color.Magenta
         else -> Color.Gray
 
     }
@@ -217,7 +218,7 @@ fun Header(
 }
 
 @Composable
-fun BodyHomeDktrView(
+fun BodyHomeDokterView(
     homeDokterUiState: HomeDokterUiState,
     modifier: Modifier = Modifier,
     onClick: (String) -> Unit = { }
@@ -288,7 +289,7 @@ fun HomeDokterView(
     onDetailClick: (String) -> Unit = { },
     modifier: Modifier = Modifier,
 
-) {
+    ) {
     Scaffold (
         modifier = modifier,
         topBar = {
@@ -346,7 +347,7 @@ fun HomeDokterView(
             innerPadding ->
         val homeDokterUiState by viewModel.homeUiState.collectAsState()
 
-        BodyHomeDktrView(
+        BodyHomeDokterView(
             homeDokterUiState = homeDokterUiState,
             onClick = {
                 onDetailClick(it)

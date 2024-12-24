@@ -1,5 +1,4 @@
-package com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter
-
+package com.example.ucp2roomdatabase_0036.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

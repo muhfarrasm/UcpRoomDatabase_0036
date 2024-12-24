@@ -1,4 +1,5 @@
-package com.example.ucp2roomdatabase_0036.ui.viewmodel.dokter
+package com.example.ucp2roomdatabase_0036.ui.viewmodel
+
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,48 +11,8 @@ import com.example.ucp2roomdatabase_0036.data.entity.Dokter
 import com.example.ucp2roomdatabase_0036.repository.RepositoryDokter
 import kotlinx.coroutines.launch
 
-//data class variable yang menyimpan
-//data input form
-data class DokterEvent(
-    val Id : String ="",
-    val NamaDokter : String ="",
-    val Spesialis : String ="",
-    val Klinik : String ="",
-    val NoHpDokter : String ="",
-    val JamKerja : String =""
-)
-
-//Menyimpan input form ke dalam entity
-fun DokterEvent.toDokterEntity():Dokter = Dokter(
-
-    Id = Id,
-    NamaDokter = NamaDokter,
-    Spesialis = Spesialis,
-    Klinik = Klinik,
-    NoHpDokter = NoHpDokter,
-    JamKerja = JamKerja
-)
 
 
-data class FormErrorState(
-    val Id: String? = null,
-    val NamaDokter: String?= null,
-    val Spesialis: String? = null,
-    val Klinik: String? = null,
-    val NoHpDokter: String? = null,
-    val JamKerja: String? = null
-) {
-    fun isValid(): Boolean {
-        return Id == null && NamaDokter == null && Spesialis == null && Klinik == null
-                && NoHpDokter == null && JamKerja == null
-    }
-}
-
-data class DokterUiState(
-    val dokterEvent: DokterEvent = DokterEvent(),
-    val isEntryValid: FormErrorState = FormErrorState(),
-    val snackBarMessage: String? = null
-)
 
 class DokterViewModel (
     private val repositoryDokter: RepositoryDokter
@@ -107,3 +68,47 @@ class DokterViewModel (
         uiState = uiState.copy(snackBarMessage = null)
     }
 }
+
+//data class variable yang menyimpan
+//data input form
+data class DokterEvent(
+    val Id : String ="",
+    val NamaDokter : String ="",
+    val Spesialis : String ="",
+    val Klinik : String ="",
+    val NoHpDokter : String ="",
+    val JamKerja : String =""
+)
+
+//Menyimpan input form ke dalam entity
+fun DokterEvent.toDokterEntity():Dokter = Dokter(
+
+    Id = Id,
+    NamaDokter = NamaDokter,
+    Spesialis = Spesialis,
+    Klinik = Klinik,
+    NoHpDokter = NoHpDokter,
+    JamKerja = JamKerja
+)
+
+
+data class FormErrorState(
+    val Id: String? = null,
+    val NamaDokter: String?= null,
+    val Spesialis: String? = null,
+    val Klinik: String? = null,
+    val NoHpDokter: String? = null,
+    val JamKerja: String? = null
+) {
+    fun isValid(): Boolean {
+        return Id == null && NamaDokter == null && Spesialis == null && Klinik == null
+                && NoHpDokter == null && JamKerja == null
+    }
+}
+
+data class DokterUiState(
+    val dokterEvent: DokterEvent = DokterEvent(),
+    val isEntryValid: FormErrorState = FormErrorState(),
+    val snackBarMessage: String? = null
+)
+
