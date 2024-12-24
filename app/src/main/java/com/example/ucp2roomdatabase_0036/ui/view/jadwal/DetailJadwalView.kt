@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -34,10 +35,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ucp2roomdatabase_0036.data.entity.Jadwal
 import com.example.ucp2roomdatabase_0036.ui.customwidget.TopAppBar
+
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.DetailJadwalUiState
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.DetailJadwalViewModel
+
+
 import com.example.ucp2roomdatabase_0036.ui.viewmodel.PenyediaViewModel
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.DetailJdlViewModel
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.DetailUiState
-import com.example.ucp2roomdatabase_0036.ui.viewmodel.jadwal.toJadwalEntity
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.toJadwalEntity
 
 
 @Composable
@@ -45,7 +49,7 @@ private fun DeleteConfirmationDialog(
     onDeleteConfirm: () -> Unit,
     onDeleteCancel: () -> Unit,
     modifier: Modifier = Modifier
-){
+) {
     AlertDialog(
         onDismissRequest = { },
         title = { Text("Delete Data") },
@@ -65,7 +69,7 @@ private fun DeleteConfirmationDialog(
 }
 
 @Composable
-fun ComponentDetailJadwal(
+fun ComponentDetailJad(
     modifier: Modifier = Modifier,
     judul: String,
     isinya: String
@@ -78,50 +82,47 @@ fun ComponentDetailJadwal(
             text = "$judul : ",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Gray
+            color = Color.DarkGray
         )
 
         Text(
             text = isinya,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
+            color = Color.Black
         )
     }
 }
 
 @Composable
-fun ItemDetailJadwal(
+fun ItemDetailJad(
     modifier: Modifier = Modifier,
     jadwal: Jadwal
 ) {
     Card (
         modifier = modifier
             .fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-        )
     ) {
         Column (
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
         ){
-            ComponentDetailJadwal(judul = "NIM", isinya = jadwal.id)
+            ComponentDetailJad(judul = "Id", isinya = jadwal.id)
             Spacer(modifier = Modifier.padding(4.dp))
 
-            ComponentDetailJadwal(judul = "Nama", isinya = jadwal.NamaPasien)
+            ComponentDetailJad(judul = "Nama Dokter", isinya = jadwal.NamaDokter)
             Spacer(modifier = Modifier.padding(4.dp))
 
-            ComponentDetailJadwal(judul = "Alamat", isinya = jadwal.NamaDokter)
+            ComponentDetailJad(judul = "Nama Pasien", isinya = jadwal.NamaPasien)
             Spacer(modifier = Modifier.padding(4.dp))
 
-            ComponentDetailJadwal(judul = "Jenis Kelamin", isinya = jadwal.TglKonsultasi)
+            ComponentDetailJad(judul = "Nomor hp", isinya = jadwal.NoHp)
             Spacer(modifier = Modifier.padding(4.dp))
 
 
-            ComponentDetailJadwal(judul = "Kelas", isinya = jadwal.NoHp)
+            ComponentDetailJad(judul = "Tanggal Konsultasi", isinya = jadwal.TglKonsultasi)
             Spacer(modifier = Modifier.padding(4.dp))
 
-            ComponentDetailJadwal(judul = "Angkatan", isinya = jadwal.Status)
+            ComponentDetailJad(judul = "Status", isinya = jadwal.Status)
             Spacer(modifier = Modifier.padding(4.dp))
 
         }
@@ -131,7 +132,7 @@ fun ItemDetailJadwal(
 @Composable
 fun BodyDetailMhs(
     modifier: Modifier = Modifier,
-    detailUiState: DetailUiState =DetailUiState(),
+    detailUiState: DetailJadwalUiState = DetailJadwalUiState(),
     onDeleteClick: () -> Unit = { }
 ) {
     var deleteConfirmationReuired by rememberSaveable { mutableStateOf(false) }
@@ -150,14 +151,17 @@ fun BodyDetailMhs(
                 modifier = modifier.fillMaxWidth()
                     .padding(16.dp)
             ){
-                ItemDetailJadwal(
+                ItemDetailJad(
                     jadwal = detailUiState.detailUiEvent.toJadwalEntity(),
                     modifier = Modifier
                 )
                 Spacer(modifier = Modifier.padding(8.dp))
                 Button(
                     onClick = { deleteConfirmationReuired = true },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0XFF000080)
+                    )
                 ) {
                     Text(text = "Delete")
                 }
@@ -190,9 +194,9 @@ fun BodyDetailMhs(
 }
 
 @Composable
-fun DetailJadwalView(
+fun DetailJadView(
     modifier: Modifier = Modifier,
-    viewModel: DetailJdlViewModel = viewModel(factory = PenyediaViewModel.Factory),
+    viewModel: DetailJadwalViewModel = viewModel(factory = PenyediaViewModel.Factory),
     onBack: () -> Unit = { },
     onEditClick: (String) -> Unit = { },
     onDeleteClick: () -> Unit = { }
@@ -201,22 +205,23 @@ fun DetailJadwalView(
         modifier = Modifier,
         topBar = {
             TopAppBar(
-                judul = "Detail Mahasiswa",
+                judul = "Detail Jadwal",
                 showBackButton = true,
                 onBack = onBack,
-
-
-                )
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { onEditClick(viewModel.detailUiState.value.detailUiEvent.id) },
                 shape = MaterialTheme.shapes.medium,
+                containerColor = Color(0xFF000080),
                 modifier = Modifier.padding(16.dp)
+
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Mahasiswa"
+                    contentDescription = "Edit Jadwal",
+                    tint = Color.White,
                 )
             }
         }
