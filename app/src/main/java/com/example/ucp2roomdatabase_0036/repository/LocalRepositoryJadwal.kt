@@ -17,7 +17,7 @@ class LocalRepositoryJadwal(
         jadwalDao.UpdateJadwal(jadwal)
     }
 
-    override suspend fun DeleteJadwal(jadwal: Jadwal) {
+    override suspend fun deletejdwl(jadwal: Jadwal) {
         jadwalDao.UpdateJadwal(jadwal)
     }
     override fun getAllJadwal(): Flow<List<Jadwal>> {
