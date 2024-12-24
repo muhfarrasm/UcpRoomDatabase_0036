@@ -11,10 +11,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.ucp2roomdatabase_0036.ui.view.jadwal.DetailJadwalView
+import com.example.ucp2roomdatabase_0036.ui.view.jadwal.DetailJadView
+
 import com.example.ucp2roomdatabase_0036.ui.view.jadwal.HomeJadwalView
 import com.example.ucp2roomdatabase_0036.ui.view.jadwal.InsertJadwalView
 import com.example.ucp2roomdatabase_0036.ui.view.jadwal.UpdateJadwalView
+import com.example.ucp2roomdatabase_0036.ui.viewmodel.UpdateJadwalViewModel
+
 
 //import com.example.ucp2roomdatabase_0036.ui.view.jadwal.UpdateJadwalView
 
@@ -97,16 +100,16 @@ fun PengelolaHalaman(
                     type = NavType.StringType
                 }
             )
-        ) {
-            val idJadwal = it.arguments?.getString(DestinasiDetailJadwal.idJadwal)
-            idJadwal?.let { idJadwal ->
-                DetailJadwalView(
+        ) { it ->
+            val idjadwal = it.arguments?.getString(DestinasiDetailJadwal.idJadwal)
+            idjadwal?.let { idjadwal ->
+                DetailJadView(
                     onBack = {
                         navController.popBackStack()
                     },
 
                     onEditClick = {
-                        navController.navigate("${DestinasiUpdateJadwal.route}/$id")
+                        navController.navigate("${DestinasiUpdateJadwal.route}/$it")
                     },
                     modifier = modifier,
                     onDeleteClick = {
